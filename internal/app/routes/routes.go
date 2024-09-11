@@ -2,7 +2,10 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"os"
+	docs "tonx-assignment/docs"
 	"tonx-assignment/internal/app/controllers"
 	"tonx-assignment/internal/middlewares"
 )
@@ -11,6 +14,7 @@ func Router() *gin.Engine {
 	runMode := os.Getenv(`RUN_MODE`)
 	gin.SetMode(runMode)
 	router := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
 
 	middlewares.UseMiddlewares(router)
 
@@ -57,5 +61,6 @@ func Router() *gin.Engine {
 		mgr.DELETE("/coupons", middlewares.MgrAuthorization, controllers.CouponController.DeleteCoupon)
 	}
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	return router
 }

@@ -3,6 +3,7 @@ package appRedis
 import (
 	"context"
 	"github.com/redis/go-redis/v9"
+	"log"
 	"os"
 )
 
@@ -48,4 +49,23 @@ func (r *appRedis) Count(key, pattern string) (int64, error) {
 
 func (r *appRedis) Exists(key, field string) (bool, error) {
 	return r.Client.HExists(r.Ctx, key, field).Result()
+}
+
+func (r *appRedis) GetVals(key string, maxCount int) ([]string, error) {
+	i := 0
+	vals := make([]string, 0)
+	mReserved, err := r.Client.HGetAll(r.Ctx, key).Result()
+	for _, val := range mReserved {
+		if i >= maxCount {
+			break
+		}
+		vals = append(vals, val)
+		i++
+	}
+
+	return vals, err
+}
+
+func (r *appRedis) GetFields(key string) {
+	log.Println(r.Client.HGetAll(r.Ctx, key).Result())
 }

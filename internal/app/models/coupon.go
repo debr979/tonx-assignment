@@ -40,3 +40,12 @@ type UserReservation struct {
 type ReservedCouponCount struct {
 	Count int64 `json:"count"`
 }
+
+type GrabbableCouponCount struct {
+	Count int `json:"count"`
+}
+
+type GrabCoupon struct {
+	UserId   int64 `json:"user_id"`
+	CouponId int64 `json:"coupon_id"`
+}

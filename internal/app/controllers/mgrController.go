@@ -19,7 +19,7 @@ var MgrController mgrController
 // @Tags Manager
 // @Description Login member
 // @Summary Login member
-// @Param body models.MgrLoginRequest true "login account"
+// @Param body body models.MgrLoginRequest true "login account"
 // @Success 200 {object} models.JWToken ""
 // @Failure 400 {object} string "api error"
 // @Router /mgr/login [post]

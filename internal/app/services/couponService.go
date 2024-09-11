@@ -101,9 +101,17 @@ func (r *couponService) Grab(req models.GrabCouponRequest, userId int64) (any, e
 		return nil, errors.New("invalid reserve time")
 	}
 
-	rdb.Count()
+	grabKey := fmt.Sprintf("grabCoupon:%s", nowDate)
+	var grabCoupon models.GrabCoupon
+	grabCoupon.UserId = userId
+	grabCoupon.CouponId = couponModel.Id
+	b, _ := json.Marshal(grabCoupon)
 
-	return nil, nil
+	if err := rdb.Set(grabKey, field, string(b)); err != nil {
+		return nil, err
+	}
+
+	return true, nil
 }
 
 func (r *couponService) UseCoupon(req models.UseCouponRequest) (any, error) {

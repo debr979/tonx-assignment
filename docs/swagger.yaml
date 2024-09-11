@@ -1,0 +1,390 @@
+definitions:
+  models.AddCouponRequest:
+    properties:
+      coupon_type:
+        type: integer
+      grab_ended_at:
+        type: string
+      grab_started_at:
+        type: string
+      reserve_ended_at:
+        type: string
+      reserve_started_at:
+        type: string
+    required:
+    - coupon_type
+    - grab_ended_at
+    - grab_started_at
+    - reserve_ended_at
+    - reserve_started_at
+    type: object
+  models.ChangePasswordRequest:
+    properties:
+      new_password:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - new_password
+    - password
+    - username
+    type: object
+  models.Coupon:
+    properties:
+      couponType:
+        type: integer
+      createdAt:
+        type: string
+      grabEndedAt:
+        type: string
+      grabStartedAt:
+        type: string
+      id:
+        type: integer
+      isAvailable:
+        type: boolean
+      reserveEndedAt:
+        type: string
+      reserveStartedAt:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.DeleteAccountRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.DeleteCouponRequest:
+    properties:
+      coupon_id:
+        type: integer
+    required:
+    - coupon_id
+    type: object
+  models.GetCouponsResponse:
+    properties:
+      coupons:
+        items:
+          $ref: '#/definitions/models.Coupon'
+        type: array
+    type: object
+  models.GrabCouponRequest:
+    properties:
+      coupon_id:
+        type: integer
+    required:
+    - coupon_id
+    type: object
+  models.JWToken:
+    properties:
+      access_token:
+        $ref: '#/definitions/models.TokenValue'
+      refresh_token:
+        $ref: '#/definitions/models.TokenValue'
+    type: object
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.MgrLoginRequest:
+    properties:
+      manager_name:
+        type: string
+      password:
+        type: string
+    required:
+    - manager_name
+    - password
+    type: object
+  models.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+      username:
+        type: string
+    required:
+    - refresh_token
+    - username
+    type: object
+  models.RegisterRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.ReserveCouponRequest:
+    properties:
+      coupon_id:
+        type: integer
+    required:
+    - coupon_id
+    type: object
+  models.TokenValue:
+    properties:
+      expiredAt:
+        type: integer
+      token:
+        type: string
+    type: object
+  models.UseCouponRequest:
+    properties:
+      coupon_id:
+        type: integer
+    required:
+    - coupon_id
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/refreshToken:
+    post:
+      description: refresh access token
+      parameters:
+      - description: refresh access token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshTokenRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JWToken'
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: refresh access token
+      tags:
+      - Auth
+  /coupons/getCoupons:
+    get:
+      description: get current available coupons
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetCouponsResponse'
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: get current available coupons
+      tags:
+      - coupon
+  /coupons/grab:
+    post:
+      description: grab coupon
+      parameters:
+      - description: GrabCouponRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.GrabCouponRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: grab coupon
+      tags:
+      - coupons
+  /coupons/reserve:
+    post:
+      description: reserve coupon
+      parameters:
+      - description: ReserveCouponRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReserveCouponRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: reserve coupon
+      tags:
+      - coupons
+  /coupons/useCoupon:
+    post:
+      description: use coupon
+      parameters:
+      - description: UseCouponRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UseCouponRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: use coupon
+      tags:
+      - coupon
+  /mgr/coupons:
+    post:
+      description: delete coupon
+      parameters:
+      - description: DeleteCouponRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeleteCouponRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: delete coupon
+      tags:
+      - Manager
+  /mgr/login:
+    post:
+      description: Login member
+      parameters:
+      - description: login account
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.MgrLoginRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JWToken'
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: Login member
+      tags:
+      - Manager
+  /user/login:
+    post:
+      description: Login member
+      parameters:
+      - description: login account
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.JWToken'
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: Login member
+      tags:
+      - User
+  /users/user:
+    delete:
+      description: DeleteAccount member
+      parameters:
+      - description: delete account
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeleteAccountRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: DeleteAccount member
+      tags:
+      - User
+    patch:
+      description: Change member password
+      parameters:
+      - description: modify member password
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ChangePasswordRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: Change member password
+      tags:
+      - User
+    post:
+      description: Register member
+      parameters:
+      - description: register account
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+        "400":
+          description: api error
+          schema:
+            type: string
+      summary: Register member
+      tags:
+      - User
+swagger: "2.0"

@@ -19,7 +19,7 @@ var UserController userController
 // @Tags User
 // @Description Register member
 // @Summary Register member
-// @Param body models.RegisterRequest true "register account"
+// @Param body body models.RegisterRequest true "register account"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /users/user [post]
@@ -59,7 +59,7 @@ func (r *userController) Register(c *gin.Context) {
 // @Tags User
 // @Description Change member password
 // @Summary Change member password
-// @Param body models.ChangePasswordRequest true "modify member password"
+// @Param body body models.ChangePasswordRequest true "modify member password"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /users/user [patch]
@@ -100,7 +100,7 @@ func (r *userController) ChangePassword(c *gin.Context) {
 // @Tags User
 // @Description DeleteAccount member
 // @Summary DeleteAccount member
-// @Param body models.DeleteAccountRequest true "delete account"
+// @Param body body models.DeleteAccountRequest true "delete account"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /users/user [delete]
@@ -135,7 +135,7 @@ func (r *userController) DeleteAccount(c *gin.Context) {
 // @Tags User
 // @Description Login member
 // @Summary Login member
-// @Param body models.LoginRequest true "login account"
+// @Param body body models.LoginRequest true "login account"
 // @Success 200 {object} models.JWToken ""
 // @Failure 400 {object} string "api error"
 // @Router /user/login [post]

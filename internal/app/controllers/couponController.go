@@ -36,7 +36,7 @@ func (r *couponController) GetCoupons(c *gin.Context) {
 // @Tags Manager
 // @Description create coupon
 // @Summary create coupon
-// @Param body models.AddCouponRequest true ""
+// @Param body body models.AddCouponRequest true "AddCouponRequest"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /mgr/coupons [post]
@@ -66,7 +66,7 @@ func (r *couponController) AddCoupon(c *gin.Context) {
 // @Tags Manager
 // @Description delete coupon
 // @Summary delete coupon
-// @Param body models.DeleteCouponRequest true ""
+// @Param body body models.DeleteCouponRequest true "DeleteCouponRequest"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /mgr/coupons [post]
@@ -96,7 +96,7 @@ func (r *couponController) DeleteCoupon(c *gin.Context) {
 // @Tags coupons
 // @Description reserve coupon
 // @Summary reserve coupon
-// @Param body models.ReserveCouponRequest true "refresh access token"
+// @Param body body models.ReserveCouponRequest true "ReserveCouponRequest"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /coupons/reserve [post]
@@ -132,7 +132,7 @@ func (r *couponController) Reserve(c *gin.Context) {
 // @Tags coupons
 // @Description grab coupon
 // @Summary grab coupon
-// @Param body models.GrabCouponRequest true ""
+// @Param body body models.GrabCouponRequest true "GrabCouponRequest"
 // @Success 200 {bool} bool""
 // @Failure 400 {object} string "api error"
 // @Router /coupons/grab [post]
@@ -169,7 +169,7 @@ func (r *couponController) Grab(c *gin.Context) {
 // @Tags coupon
 // @Description use coupon
 // @Summary use coupon
-// @Param body models.UseCouponRequest true ""
+// @Param body body models.UseCouponRequest true "UseCouponRequest"
 // @Success 200 {bool} bool ""
 // @Failure 400 {object} string "api error"
 // @Router /coupons/useCoupon [post]

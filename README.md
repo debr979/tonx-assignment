@@ -12,3 +12,18 @@
 
 ---
 
+### RUN services
+
+#### initial project
+> make init
+
+
+
+#### normal run
+> make run
+
+---
+
+Database Diagram
+
+![image](https://i.imgur.com/Ej0EtgO.png)

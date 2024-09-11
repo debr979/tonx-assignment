@@ -1,0 +1,599 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/auth/refreshToken": {
+            "post": {
+                "description": "refresh access token",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "refresh access token",
+                "parameters": [
+                    {
+                        "description": "refresh access token",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RefreshTokenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.JWToken"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupons/getCoupons": {
+            "get": {
+                "description": "get current available coupons",
+                "tags": [
+                    "coupon"
+                ],
+                "summary": "get current available coupons",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetCouponsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupons/grab": {
+            "post": {
+                "description": "grab coupon",
+                "tags": [
+                    "coupons"
+                ],
+                "summary": "grab coupon",
+                "parameters": [
+                    {
+                        "description": "GrabCouponRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.GrabCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupons/reserve": {
+            "post": {
+                "description": "reserve coupon",
+                "tags": [
+                    "coupons"
+                ],
+                "summary": "reserve coupon",
+                "parameters": [
+                    {
+                        "description": "ReserveCouponRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ReserveCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupons/useCoupon": {
+            "post": {
+                "description": "use coupon",
+                "tags": [
+                    "coupon"
+                ],
+                "summary": "use coupon",
+                "parameters": [
+                    {
+                        "description": "UseCouponRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UseCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgr/coupons": {
+            "post": {
+                "description": "delete coupon",
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "delete coupon",
+                "parameters": [
+                    {
+                        "description": "DeleteCouponRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mgr/login": {
+            "post": {
+                "description": "Login member",
+                "tags": [
+                    "Manager"
+                ],
+                "summary": "Login member",
+                "parameters": [
+                    {
+                        "description": "login account",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MgrLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.JWToken"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Login member",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login member",
+                "parameters": [
+                    {
+                        "description": "login account",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.JWToken"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/user": {
+            "post": {
+                "description": "Register member",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Register member",
+                "parameters": [
+                    {
+                        "description": "register account",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DeleteAccount member",
+                "tags": [
+                    "User"
+                ],
+                "summary": "DeleteAccount member",
+                "parameters": [
+                    {
+                        "description": "delete account",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Change member password",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Change member password",
+                "parameters": [
+                    {
+                        "description": "modify member password",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    },
+                    "400": {
+                        "description": "api error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.AddCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_type",
+                "grab_ended_at",
+                "grab_started_at",
+                "reserve_ended_at",
+                "reserve_started_at"
+            ],
+            "properties": {
+                "coupon_type": {
+                    "type": "integer"
+                },
+                "grab_ended_at": {
+                    "type": "string"
+                },
+                "grab_started_at": {
+                    "type": "string"
+                },
+                "reserve_ended_at": {
+                    "type": "string"
+                },
+                "reserve_started_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ChangePasswordRequest": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Coupon": {
+            "type": "object",
+            "properties": {
+                "couponType": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "grabEndedAt": {
+                    "type": "string"
+                },
+                "grabStartedAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isAvailable": {
+                    "type": "boolean"
+                },
+                "reserveEndedAt": {
+                    "type": "string"
+                },
+                "reserveStartedAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.DeleteAccountRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.DeleteCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_id"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.GetCouponsResponse": {
+            "type": "object",
+            "properties": {
+                "coupons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Coupon"
+                    }
+                }
+            }
+        },
+        "models.GrabCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_id"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.JWToken": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "$ref": "#/definitions/models.TokenValue"
+                },
+                "refresh_token": {
+                    "$ref": "#/definitions/models.TokenValue"
+                }
+            }
+        },
+        "models.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.MgrLoginRequest": {
+            "type": "object",
+            "required": [
+                "manager_name",
+                "password"
+            ],
+            "properties": {
+                "manager_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RefreshTokenRequest": {
+            "type": "object",
+            "required": [
+                "refresh_token",
+                "username"
+            ],
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ReserveCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_id"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.TokenValue": {
+            "type": "object",
+            "properties": {
+                "expiredAt": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UseCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_id"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

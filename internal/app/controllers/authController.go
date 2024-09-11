@@ -18,8 +18,8 @@ var AuthController authController
 // @Tags Auth
 // @Description refresh access token
 // @Summary refresh access token
-// @Param body models.RefreshTokenRequest true "refresh access token"
-// @Success 200 {object} models.JWToken ""
+// @Param body body models.RefreshTokenRequest true "refresh access token"
+// @Success 200 {object} models.JWToken
 // @Failure 400 {object} string "api error"
 // @Router /auth/refreshToken [post]
 func (r *authController) RefreshToken(c *gin.Context) {

@@ -32,14 +32,14 @@ func (r *cronJob) Run() {
 	rdb := appRedis.New()
 	// auto create a new daily coupon
 	_, err = scheduler.NewJob(
-		gocron.DailyJob(1, gocron.NewAtTimes(gocron.NewAtTime(13, 14, 0))),
+		gocron.DailyJob(1, gocron.NewAtTimes(gocron.NewAtTime(22, 0, 0))),
 		gocron.NewTask(func(todayTime time.Time) {
 			model := models.Coupon{
 				CouponType:       1,
 				ReserveStartedAt: time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), 22, 55, 0, 0, todayTime.Location()),
 				ReserveEndedAt:   time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), 22, 58, 0, 0, todayTime.Location()),
 				GrabStartedAt:    time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), 22, 59, 0, 0, todayTime.Location()),
-				GrabEndedAt:      time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), 23, 0, 0, 0, todayTime.Location()),
+				GrabEndedAt:      time.Date(todayTime.Year(), todayTime.Month(), todayTime.Day(), 22, 59, 59, 0, todayTime.Location()),
 			}
 
 			_ = repositories.CouponRepository.AddCoupon(&model)
@@ -55,6 +55,9 @@ func (r *cronJob) Run() {
 		utils.Logger.LogOutput(err)
 	}
 
+	cntField := "totalCount"
+	partCntField := "partField"
+
 	_, err = scheduler.NewJob(
 		gocron.DailyJob(1, gocron.NewAtTimes(gocron.NewAtTime(22, 58, 1))),
 		gocron.NewTask(func(todayTime time.Time) {
@@ -63,19 +66,53 @@ func (r *cronJob) Run() {
 			if err != nil {
 				utils.Logger.LogOutput(err)
 			}
-
 			if keyCount > 0 {
-				field := "totalCount"
-				partField := "partField"
-				if err := rdb.Set("reserveCouponCount", field, keyCount); err != nil {
+				if err := rdb.Set("reserveCouponCount", cntField, keyCount); err != nil {
 					utils.Logger.LogOutput(err)
 				}
-
-				partCount := math.Ceil(float64(keyCount) * 0.2)
-				if err := rdb.Set("reserveCouponCount", partField, partCount); err != nil {
+				var grabbableCount models.GrabbableCouponCount
+				grabbableCount.Count = int(math.Ceil(float64(keyCount) * 0.2))
+				b, _ := json.Marshal(grabbableCount)
+				if err := rdb.Set("grabbableCouponCount", partCntField, string(b)); err != nil {
 					utils.Logger.LogOutput(err)
 				}
 			}
+		}, today),
+	)
+	if err != nil {
+		utils.Logger.LogOutput(err)
+	}
+
+	_, err = scheduler.NewJob(
+		gocron.DailyJob(1, gocron.NewAtTimes(gocron.NewAtTime(22, 59, 59))),
+		gocron.NewTask(func(todayTime time.Time) {
+			key := todayTime.Format(time.DateOnly)
+
+			rawGrabbable, err := rdb.Get("grabbableCouponCount", partCntField)
+			if err != nil {
+				utils.Logger.LogOutput(err)
+			}
+			var grabbableCount models.GrabbableCouponCount
+			_ = json.Unmarshal([]byte(rawGrabbable), &grabbableCount)
+
+			vals, err := rdb.GetVals(fmt.Sprintf("grabCoupon:%s", key), grabbableCount.Count)
+			if err != nil {
+				utils.Logger.LogOutput(err)
+			}
+			grabModel := make([]models.UserCoupon, 0)
+			for _, val := range vals {
+				var grabbableCoupon models.GrabCoupon
+				_ = json.Unmarshal([]byte(val), &grabbableCoupon)
+				grabModel = append(grabModel, models.UserCoupon{
+					UserId:   grabbableCoupon.UserId,
+					CouponId: grabbableCoupon.CouponId,
+				})
+			}
+
+			if err := repositories.CouponRepository.Grab(&grabModel); err != nil {
+				utils.Logger.LogOutput(err)
+			}
+
 		}, today),
 	)
 	if err != nil {
