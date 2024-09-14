@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"io"
 	"tonx-assignment/internal/app/models"
@@ -28,10 +29,13 @@ func (r *userService) Register(req models.RegisterRequest) (int64, error) {
 		return 0, errors.New("its registered")
 	}
 
-	h := sha256.New()
-	_, _ = io.WriteString(h, req.Password)
+	password, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return 0, err
+	}
+
 	user.Username = req.Username
-	user.Password = fmt.Sprintf("%x", h.Sum(nil))
+	user.Password = string(password)
 
 	if err := repositories.UserRepository.Register(&user); err != nil {
 		return 0, err
@@ -68,12 +72,11 @@ func (r *userService) DeleteAccount(req models.DeleteAccountRequest) error {
 
 func (r *userService) Login(req models.LoginRequest) (any, error) {
 	var user models.User
+	if err := repositories.UserRepository.Login(&user, req.Username); err != nil {
+		return nil, err
+	}
 
-	h := sha256.New()
-	_, _ = io.WriteString(h, req.Password)
-	req.Password = fmt.Sprintf("%x", h.Sum(nil))
-
-	if err := repositories.UserRepository.Login(&user, req.Username, req.Password); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return nil, err
 	}
 

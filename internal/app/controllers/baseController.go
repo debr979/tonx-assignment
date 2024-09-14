@@ -16,7 +16,7 @@ func (r *baseControllers) Request(ctx *gin.Context) *baseControllers {
 }
 
 func (r *baseControllers) ParseBody(req any) error {
-	return r.ctx.ShouldBindJSON(req)
+	return r.ctx.BindJSON(req)
 }
 
 func (r *baseControllers) Response(httpCode int, errText string, data any) {

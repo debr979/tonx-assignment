@@ -25,9 +25,9 @@ func (r *userRepository) DeleteAccount(username, password string) error {
 	return dbConn.Where("username = ? and password = ?", username, password).Model(&models.User{}).Update("is_deleted", false).Error
 }
 
-func (r *userRepository) Login(model any, username, password string) error {
+func (r *userRepository) Login(model any, username string) error {
 	dbConn := db.Conn()
-	return dbConn.Where("username = ? and password = ?", username, password).First(model).Error
+	return dbConn.Where("username = ? ", username).First(model).Error
 }
 
 func (r *userRepository) IsUser(model any, username string) error {
